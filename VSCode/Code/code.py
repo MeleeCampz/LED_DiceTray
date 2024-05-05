@@ -1,10 +1,11 @@
 import time
 import Helpers
 import Hardware
+import MPU.MPU as MPU
 
-#region Modes
-import DefaultMode
+# Modes
 import BrightnessMode
+import DefaultMode
 
 #Hardware
 hardware = Hardware.Hardware()
@@ -17,17 +18,43 @@ current_mode_index = 0
 modes[current_mode_index].OnEnter()
 
 
-def UpdateMode():
-    if hardware.CheckButtonPress():
-        prevIndex = current_mode_index
-        current_mode_index = Helpers.Repeat(current_mode_index +1, 0, len(modes) - 1)
-        modes[prevIndex].OnExit()
-        modes[current_mode_index].OnEter()
+#find i2c address
+#import board
+# i2c = board.I2C()  # uses board.SCL and board.SDA
+# while not i2c.try_lock():
+#     pass
 
-    modes[current_mode_index].OnUpdate()
-   
+# try:
+#     while True:
+#         print(
+#             "I2C addresses found:",
+#             [hex(device_address) for device_address in i2c.scan()],
+#         )
+#         time.sleep(2)
+
+# finally:  # unlock the i2c bus when ctrl-c'ing out of the loop
+#     i2c.unlock()
+
+#MPU
+mpu = MPU.MPU()
+
+sleepTime = 0.02
+lastImpact = time.monotonic()
+
 #Main Loop
 while True:
-    UpdateMode() 
+    if hardware.CheckButtonPress():
+        prevIndex = current_mode_index
+        current_mode_index = Helpers.Repeat(current_mode_index + 1, 0, len(modes) - 1)
+        modes[prevIndex].OnExit()
+        modes[current_mode_index].OnEnter()
+
+    modes[current_mode_index].OnUpdate()
     #How much to limit here?
-    time.sleep(0.1)
+    time.sleep(sleepTime)
+    mpu.Update()
+    
+    currentTime = time.monotonic()
+    if mpu.DetectImpact() and currentTime - lastImpact > 0.1:
+        hardware.DisplayNextAnimation()
+        lastImpact = currentTime
