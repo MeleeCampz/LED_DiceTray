@@ -1,4 +1,4 @@
-import ControlMode
+from ControlModes import ControlMode
 import Hardware
 from Settings import Settings
 
@@ -19,3 +19,4 @@ class SensitivityMode(ControlMode.ControlMode):
             
     def OnExit(self):
         super().OnExit()
+        Settings.StoreSettings()

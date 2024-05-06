@@ -1,4 +1,4 @@
-import ControlMode
+from ControlModes import ControlMode
 import Hardware
 
 #Simple Mode that just display animation
@@ -15,7 +15,6 @@ class DefaultMode(ControlMode.ControlMode):
     def OnExit(self):
         super().OnExit()
 
-        
     def OnUpdate(self):
         super().OnUpdate()
         if self.rotationDelta > 0:

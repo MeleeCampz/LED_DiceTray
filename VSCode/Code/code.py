@@ -1,11 +1,15 @@
 import time
 import Helpers
 import Hardware
+import Settings
 
 # Modes
-import BrightnessMode
-import DefaultMode
-import SensitivityMode
+from ControlModes import BrightnessMode
+from ControlModes import DefaultMode
+from ControlModes import SensitivityMode
+
+#Load Settings before anything else
+Settings.Settings.LoadSettings()
 
 #Hardware
 hardware = Hardware.Hardware()
@@ -38,7 +42,6 @@ while True:
     if hardware.DetectImpact() and currentTime - lastImpact > 0.1:
         hardware.TriggerAnimation()
         lastImpact = currentTime
-
         
 #find i2c address
 #import board

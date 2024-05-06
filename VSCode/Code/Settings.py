@@ -1,7 +1,9 @@
-#import adafruit_json_stream as json_stream
+import storage
+import json
 
 SETTINGS_FILE_NAME = "settings.json"
 BRIGHTNESS_KEY = "BRIGHTNESS"
+SENSITIVITY_KEY = "SENSITIVITY"
 
 class Settings(object):
     num_neopixels = 31
@@ -16,17 +18,27 @@ class Settings(object):
     min_sensitivity = 5
     max_sensitivity = 100
     
-    #def __init__(self) -> None:
-    #   self.brightness = 0.1
+    def LoadSettings():
+        try:
+            with open(SETTINGS_FILE_NAME) as fh:
+                storedSettings = json.load(fh)
+                Settings.brightness = storedSettings[BRIGHTNESS_KEY]
+                Settings.sensitibity = storedSettings[SENSITIVITY_KEY]
+        except Exception as e:
+            print(e)
+            
+    def StoreSettings():
+        if storage.getmount("/").readonly:
+            print("Cannot store settings when in readonly mode!")
+        else:
+            print("Should be able to store settings")
 
-    # def StoreSettings(self):
-    #     try:
-    #         with open(SETTINGS_FILE_NAME, "a") as fp:
-    #             fp.write('{0}: {1:f}\n'.format(BRIGHTNESS_KEY, self.brightness))
-    #             fp.flush()
-    #     except OSError as e:  # Typically when the filesystem isn't writeable...
-    #         print("Failed to store settings")
-    #         print(e)
-
-    # def LoadSettings(self):
-    #     pass
+            dic = dict()
+            dic[BRIGHTNESS_KEY] = Settings.brightness
+            dic[SENSITIVITY_KEY] = Settings.sensitibity
+        
+            try:
+                with open(SETTINGS_FILE_NAME, 'w') as fh:
+                    json.dump(dic, fh)
+            except Exception  as e:
+                print(e)
