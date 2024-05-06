@@ -1,13 +1,13 @@
 import board
 import busio
 import time
-import math
 from MPU.mpu9250 import MPU9250
 from MPU.mpu6500 import MPU6500
 from MPU.ak8963 import AK8963
 
 
-class MPU:
+class MPU(object):
+    
     def __init__(self):
         self.i2c = busio.I2C(board.SCL, board.SDA)
         self.mpu = MPU6500(self.i2c, address=0x68)      
@@ -19,6 +19,9 @@ class MPU:
         
         self.bufferLenght = int (2)
         self.buffer = [0] * self.bufferLenght
+
+
+        self.triggerThreshhold = 50
 
         print("Reading in data from IMU.")
         print("MPU9250 id: " + hex(self.sensor.read_whoami()))
@@ -49,4 +52,4 @@ class MPU:
         self.impact /= self.bufferLenght
         
     def DetectImpact(self):
-        return self.impact > 50 
+        return self.impact > self.triggerThreshhold
