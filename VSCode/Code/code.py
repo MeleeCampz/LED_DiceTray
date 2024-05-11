@@ -7,6 +7,8 @@ import Settings
 from ControlModes import BrightnessMode
 from ControlModes import DefaultMode
 from ControlModes import SensitivityMode
+from ControlModes import DurationMode
+from ControlModes import SpeedMode
 
 #Load Settings before anything else
 Settings.Settings.LoadSettings()
@@ -19,6 +21,8 @@ modes = []
 modes.append(DefaultMode.DefaultMode(hardware))
 modes.append(BrightnessMode.BrightnessMode(hardware))
 modes.append(SensitivityMode.SensitivityMode(hardware))
+modes.append(DurationMode.DurationMode(hardware))
+modes.append(SpeedMode.SpeedMode(hardware))
 
 current_mode_index = 0
 modes[current_mode_index].OnEnter()

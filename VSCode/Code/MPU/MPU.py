@@ -51,5 +51,5 @@ class MPU(object):
         
         self.impact /= self.bufferLenght
         
-    def DetectImpact(self):
+    def DetectImpact(self) -> bool:
         return self.impact > self.triggerThreshhold
