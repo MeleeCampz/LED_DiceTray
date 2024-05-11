@@ -1,5 +1,5 @@
 This is a project to create an LED lit dice tray:
-![DiceRoll](https://github.com/MeleeCampz/LED_DiceTray/assets/4601367/da108438-a3f5-449f-aa53-c3e2bbde620e)
+![CroppedDiceRoll](https://github.com/MeleeCampz/LED_DiceTray/assets/4601367/93d44b74-06e2-466d-8fc5-32ffdda85358)
 
 Parts Used:
 - neopixel LED ring with 24 LEDs: https://www.berrybase.at/neopixel-ring-mit-24-ws2812-5050-rgb-leds
